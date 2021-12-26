@@ -1,3 +1,4 @@
+import os
 import torch
 import torchvision
 import pandas as pd
@@ -57,6 +58,8 @@ class EarlyStopping:
         '''Saves model when monitored metric decrease.'''
         if self.verbose:
             self.trace_func(f'Monitored metric has improved ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
+        if not os.path.isdir(f'{ROOT_DIR}/skin_models'):
+            os.mkdir(f'{ROOT_DIR}/skin_models')
         torch.save(model.state_dict(), f'{ROOT_DIR}/skin_models/skinmodel50.pt')
         self.val_loss_min = val_loss
 
