@@ -15,7 +15,7 @@ def getMergedHAMDataset():
     part1_imgs = os.listdir(f'{ROOT_DIR}/HAM10000_images_part_1')
     for img in part1_imgs:
         copyfile(os.path.join(f'{ROOT_DIR}/HAM10000_images_part_1', img), os.path.join(f'{ROOT_DIR}/HAM10000_images_part_2', img))
-    os.rename('{ROOT_DIR}/HAM10000_images_part_2', '{ROOT_DIR}/HAM10000')
+    os.rename(f'{ROOT_DIR}/HAM10000_images_part_2', f'{ROOT_DIR}/HAM10000')
 
 def createDataFolders():
     '''
