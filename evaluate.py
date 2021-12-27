@@ -1,7 +1,39 @@
+import torch
+import torch.nn as nn
+import torchvision
+from torchvision import transforms, datasets
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report, roc_auc_score
 
+ROOT_DIR = '/gscratch/ubicomp/hughsun/HAM10000/ResNet'
+
+def getMaleAndFemaleData():
+    pass
+
+def evaluate():
+    pass
+
 # load the last checkpoint with the best model
+device = 'cuda'
+model = torchvision.models.resnet50(pretrained=True).to(device)
+model.fc = nn.Linear(2048, 7).to(device)
 model.load_state_dict(torch.load(f'{ROOT_DIR}/skinmodel50.pt'))
+
+# create validation data loader
+valdir = f'{ROOT_DIR}/skin/validation/'
+
+val_transforms = transforms.Compose([
+    transforms.Resize((224, 280)),
+    torchvision.transforms.CenterCrop((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+
+val_dataset = datasets.ImageFolder(
+    valdir, transform=val_transforms)
+
+val_loader = torch.utils.data.DataLoader(
+    val_dataset, batch_size=64, shuffle=False,
+    pin_memory=False, drop_last=False)
 
 """##
 ## __5. Results.__
@@ -20,9 +52,11 @@ num_classes = 7
 predlist = torch.zeros(0,dtype=torch.long, device='cpu')
 lbllist = torch.zeros(0,dtype=torch.long, device='cpu')
 predlistauc = torch.zeros(0,dtype=torch.long, device='cpu')
+
+model.eval()
+
 with torch.no_grad():
-    for i, (inputs, classes) in enumerate(val_loader):
-        model.eval()
+    for i, (inputs, classes) in enumerate(val_loader):        
         inputs = inputs.to(device)
         classes = classes.to(device)
         outputs = model(inputs)
