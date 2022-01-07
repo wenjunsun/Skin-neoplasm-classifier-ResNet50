@@ -4,3 +4,5 @@
 1. `python prepare_data.py`
 2. `python train.py`
 3. run `evaluate.ipynb` to evaluate the model. (see `evaluate.ipynb` for results from the experiment)
+# Tensorboard visualization of training process
+visit [Tensorboard](https://tensorboard.dev/experiment/fBMZZyWbRVSJlfbqQuyZnA/#scalars) for a visualization of training and validation loss and so on throughout the experiment. As we can see, the validation loss and accuracy have a lot of fluctuations.
